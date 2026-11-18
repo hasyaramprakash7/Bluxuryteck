@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Static image imports (bundled by Vite / Webpack)                  */
-/*  Put your screenshots in src/assets/portfolio/                     */
 /* ------------------------------------------------------------------ */
 import imgMain      from "./assets/assets/m1.png";
 import imgEcomers   from "./assets/assets/m2.png";
@@ -30,7 +29,7 @@ const RK4       = lazy(() => import("./Building/rk4"));
 const RK5       = lazy(() => import("./Building/rk5"));
 
 /* ------------------------------------------------------------------ */
-/*  PROJECT DATA — image is now the imported module                   */
+/*  PROJECT DATA                                                      */
 /* ------------------------------------------------------------------ */
 const PROJECTS = [
   {
@@ -125,24 +124,15 @@ const PROJECTS = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Card aspect ratio — 1280 × 800 (16:10)                            */
-/* ------------------------------------------------------------------ */
 const PREVIEW_W = 1280;
 const PREVIEW_H = 800;
 const PREVIEW_ASPECT = `${PREVIEW_W} / ${PREVIEW_H}`;
 
-/* ------------------------------------------------------------------ */
-/*  Logging                                                           */
-/* ------------------------------------------------------------------ */
 const PF_LOG =
   typeof import.meta !== "undefined" && import.meta.env && import.meta.env.DEV
     ? (...args) => console.info("%c[PF]", "color:#16A35A;font-weight:700", ...args)
-    : (...args) => console.info("%c[PF]", "color:#16A35A;font-weight:700", ...args);
+    : () => {};
 
-/* ------------------------------------------------------------------ */
-/*  Loading shimmer                                                   */
-/* ------------------------------------------------------------------ */
 function LoadingShimmer({ accent }) {
   return (
     <div
@@ -165,13 +155,8 @@ function LoadingShimmer({ accent }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Card image                                                        */
-/*  - Preloads the imported URL to detect load / error                */
-/*  - If image is taller than the card, hover pans top → bottom       */
-/* ------------------------------------------------------------------ */
 function CardImage({ project, engaged }) {
-  const [status, setStatus] = useState("loading"); // loading | ok | error
+  const [status, setStatus] = useState("loading");
   const [canPan, setCanPan] = useState(false);
 
   useEffect(() => {
@@ -187,21 +172,19 @@ function CardImage({ project, engaged }) {
       const cardRatio = PREVIEW_H / PREVIEW_W;
       const pannable = imgRatio > cardRatio * 1.1;
       setCanPan(pannable);
-      PF_LOG(`card:image-loaded ${project.id} (${img.naturalWidth}×${img.naturalHeight}${pannable ? ", pannable" : ""})`);
+      PF_LOG(`card:image-loaded ${project.id}`);
     };
     img.onerror = () => {
       if (cancelled) return;
       setStatus("error");
-      PF_LOG(`card:image-missing ${project.id} → ${project.image}`);
+      PF_LOG(`card:image-missing ${project.id}`);
     };
     img.src = project.image;
 
     return () => { cancelled = true; };
   }, [project.image, project.id]);
 
-  if (status === "loading") {
-    return <LoadingShimmer accent={project.accent} />;
-  }
+  if (status === "loading") return <LoadingShimmer accent={project.accent} />;
 
   if (status === "error") {
     return (
@@ -215,9 +198,6 @@ function CardImage({ project, engaged }) {
           </div>
           <div className="mt-2 text-lg font-semibold text-white">{project.title}</div>
           <div className="mt-1 text-[11px] text-white/40">{project.subtitle}</div>
-          <div className="mt-3 text-[9px] font-mono uppercase tracking-[0.2em] text-white/25">
-            image missing
-          </div>
         </div>
       </div>
     );
@@ -240,9 +220,6 @@ function CardImage({ project, engaged }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Project card                                                      */
-/* ------------------------------------------------------------------ */
 function ProjectCard({ project, onOpen, index }) {
   const [engaged, setEngaged] = useState(false);
   const activate = () => onOpen(project.id);
@@ -303,20 +280,19 @@ function ProjectCard({ project, onOpen, index }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Full-screen project viewer                                        */
-/* ------------------------------------------------------------------ */
 function ProjectViewer({ project, onClose }) {
   useEffect(() => {
+    document.title = `${project.title} — BLuxury Tech Portfolio`;
     const root = document.getElementById("root");
     if (root) root.classList.add("viewing-project");
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     return () => {
+      document.title = "BLuxury Tech — Autonomous AI Agents, Mobile Apps & Web Portals";
       if (root) root.classList.remove("viewing-project");
       document.removeEventListener("keydown", onKey);
     };
-  }, [onClose]);
+  }, [onClose, project.title]);
 
   const Cmp = project.Component;
 
@@ -361,9 +337,6 @@ function ProjectViewer({ project, onClose }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Landing page CSS                                                  */
-/* ------------------------------------------------------------------ */
 const LANDING_CSS = `
 :root{--bg:#fff;--fg:#0a0a0a;--mut:#4b5563;--green:#0B6E3C;--btn:#0B6E3C;--card:rgba(255,255,255,.72);--line:rgba(10,10,10,.15);--hbg:rgba(255,255,255,.82);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 :root[data-theme="dark"]{--bg:#000;--fg:#f5f5f5;--mut:#a3a3a3;--green:#16A35A;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.15);--hbg:rgba(0,0,0,.72)}
@@ -428,15 +401,16 @@ section{padding:110px 0}
 .f select option{background:var(--bg);color:var(--fg)}
 .msg{font-size:.9rem;min-height:1.3em;color:var(--green)}
 .msg.err{color:#d93a3a}
-footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;color:var(--mut);font-size:.85rem;background:var(--hbg);backdrop-filter:blur(14px)}
+footer{border-top:1px solid var(--line);padding:34px 20px;text-align:center;color:var(--mut);font-size:.85rem;background:var(--hbg);backdrop-filter:blur(14px)}
+.footer-links{margin-top:12px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.footer-links a{color:var(--green);font-weight:600;transition:opacity .2s}
+.footer-links a:hover{opacity:.8}
 
 @keyframes pf-fade{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* ---------- Bar layout ---------- */
 .bar-actions{display:flex;gap:10px;align-items:center}
 .desk-btn{display:inline-flex}
 
-/* Hamburger (hidden on desktop) */
 .menu-toggle{
   display:none;
   align-items:center;justify-content:center;
@@ -455,7 +429,6 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 .menu-toggle.open .bar-line:nth-child(2){opacity:0}
 .menu-toggle.open .bar-line:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
-/* Only shown inside mobile dropdown */
 .nav-extra{display:none}
 
 @media (max-width:1100px){
@@ -463,13 +436,8 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
   .pf-nav-btn svg{display:none}
 }
 
-/* ---------- Mobile: hamburger menu ---------- */
 @media (max-width:900px){
-  .bar{
-    padding:10px 16px;
-    height:auto;min-height:64px;
-    flex-wrap:nowrap;gap:10px;
-  }
+  .bar{padding:10px 16px;height:auto;min-height:64px;flex-wrap:nowrap;gap:10px}
   .desk-btn{display:none}
   .menu-toggle{display:inline-flex}
 
@@ -488,20 +456,10 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
     width:auto;white-space:normal;
   }
   nav.open{max-height:620px;padding:8px 20px 18px}
-  nav a{
-    color:var(--fg);
-    padding:12px 4px;
-    border-bottom:1px solid var(--line);
-    width:100%;
-    font-size:.95rem;
-  }
+  nav a{color:var(--fg);padding:12px 4px;border-bottom:1px solid var(--line);width:100%;font-size:.95rem}
   nav a:last-of-type{border-bottom:0}
 
-  .nav-extra{
-    display:flex;flex-direction:column;gap:10px;
-    padding-top:14px;margin-top:6px;
-    border-top:1px solid var(--line);
-  }
+  .nav-extra{display:flex;flex-direction:column;gap:10px;padding-top:14px;margin-top:6px;border-top:1px solid var(--line)}
   .nav-extra .btn{width:100%}
 
   .grid,.cta{grid-template-columns:1fr}
@@ -526,9 +484,6 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;colo
 }
 `;
 
-/* ------------------------------------------------------------------ */
-/*  Landing page data                                                 */
-/* ------------------------------------------------------------------ */
 const PRODUCTS = [
   { title: "Business and CRM automation", body: "WhatsApp and email enquiries are captured, documents are read automatically, and every lead lands in your CRM already followed up.",
     icon: <><circle cx="6" cy="6" r="3" /><circle cx="18" cy="18" r="3" /><path d="M9 6h4a4 4 0 0 1 4 4v5" /></> },
@@ -550,10 +505,8 @@ const STEPS = [
 const FOCUS_OPTIONS = ["Automation pipelines", "Mobile apps", "Web portal or SaaS", "Cloud cost reduction"];
 const NAV_ITEMS = [["products", "Products"], ["portfolio", "Portfolio"], ["process", "Process"], ["audit", "System audit"]];
 const PORTFOLIO_URL = "https://bluxury.pages.dev/";
+const INSTAGRAM_URL = "https://www.instagram.com/bluxurytech";
 
-/* ------------------------------------------------------------------ */
-/*  Three.js loader                                                   */
-/* ------------------------------------------------------------------ */
 let threePromise = null;
 function loadThree() {
   if (typeof window === "undefined") return Promise.reject(new Error("no window"));
@@ -570,9 +523,6 @@ function loadThree() {
   return threePromise;
 }
 
-/* ------------------------------------------------------------------ */
-/*  ThreeScene                                                        */
-/* ------------------------------------------------------------------ */
 function ThreeScene() {
   const canvasRef = useRef(null);
   const colorsRef = useRef(null);
@@ -717,17 +667,11 @@ function ThreeScene() {
   return <canvas id="scene" ref={canvasRef} aria-hidden="true" />;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Theme                                                             */
-/* ------------------------------------------------------------------ */
 const getInitialTheme = () => {
   if (typeof window === "undefined") return "light";
   try { return localStorage.getItem("blt-theme") || "light"; } catch { return "light"; }
 };
 
-/* ------------------------------------------------------------------ */
-/*  Main combined component                                           */
-/* ------------------------------------------------------------------ */
 export default function App() {
   const [theme, setTheme] = useState(getInitialTheme);
   const [activeId, setActiveId] = useState(null);
@@ -744,14 +688,12 @@ export default function App() {
     if (ref && ref.current) ref.current();
   }, [theme]);
 
-  // Close mobile menu when viewport grows past breakpoint
   useEffect(() => {
     const onResize = () => { if (window.innerWidth > 900) setMenuOpen(false); };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Close mobile menu on outside click
   useEffect(() => {
     if (!menuOpen) return;
     const onDown = (e) => {
@@ -761,7 +703,6 @@ export default function App() {
     return () => document.removeEventListener("mousedown", onDown);
   }, [menuOpen]);
 
-  // Close mobile menu on Escape
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
@@ -774,7 +715,6 @@ export default function App() {
   }, []);
 
   const open = useCallback((id) => {
-    PF_LOG(`open project ${id}`);
     savedScroll.current = window.scrollY;
     window.history.pushState({ project: id }, "", `#${id}`);
     setActiveId(id);
@@ -797,18 +737,15 @@ export default function App() {
     const hash = window.location.hash.replace(/^#/, "");
     const deepLinked = hash && PROJECTS.find((p) => p.id === hash);
     if (deepLinked && !window.history.state?.project) {
-      PF_LOG(`deep-link ${hash}`);
       window.history.pushState({ project: hash }, "", `#${hash}`);
       setActiveId(hash);
       requestAnimationFrame(() => window.scrollTo(0, 0));
     }
     const onPopState = (e) => {
       if (e.state?.project) {
-        PF_LOG(`history:open ${e.state.project}`);
         setActiveId(e.state.project);
         requestAnimationFrame(() => window.scrollTo(0, 0));
       } else {
-        PF_LOG(`history:back to gallery`);
         setActiveId(null);
         const y = savedScroll.current;
         if (y > 0) { savedScroll.current = 0; requestAnimationFrame(() => window.scrollTo(0, y)); }
@@ -819,7 +756,6 @@ export default function App() {
   }, []);
 
   const jump = useCallback((id) => {
-    PF_LOG(`jump to #${id}`);
     setMenuOpen(false);
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -833,7 +769,6 @@ export default function App() {
       setMsg({ text: "Enter your name and a valid work email.", error: true });
       return;
     }
-    PF_LOG(`audit form submitted`);
     setMsg({ text: `Thanks ${name.split(" ")[0]}. We will reply to ${email} within one business day.`, error: false });
   };
 
@@ -1014,7 +949,17 @@ export default function App() {
         </section>
       </main>
 
-      <footer>B Luxury Tech is the operating entity of B Luxury Private Limited.</footer>
+      <footer>
+        <div>B Luxury Tech is the operating entity of B Luxury Private Limited.</div>
+        <div className="footer-links">
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+            Instagram (@bluxurytech)
+          </a>
+          <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+            BLuxury Social App
+          </a>
+        </div>
+      </footer>
     </>
   );
 }

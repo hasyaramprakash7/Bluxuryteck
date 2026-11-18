@@ -453,7 +453,7 @@ nav a{color:var(--mut);transition:color .2s}nav a:hover{color:var(--fg)}
 .wrap{max-width:1220px;margin:0 auto;padding:0 24px}
 
 /* Hero + Eyebrow */
-.hero{min-height:calc(100svh - 68px);display:flex;align-items:center;padding:52px 0}
+.hero{min-height:calc(100svh - 68px);display:flex;align-items:center;padding:102px 0}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);backdrop-filter:blur(14px);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin-bottom:24px;box-shadow:var(--shadow)}
 .eyebrow-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
 .eyebrow span{color:var(--green)}

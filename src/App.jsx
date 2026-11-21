@@ -6,15 +6,15 @@ import { ArrowLeft, ArrowUpRight, CheckCircle2, ShieldCheck, Terminal, Cpu, Glob
 /* ------------------------------------------------------------------ */
 /*  Static image imports (bundled by Vite / Webpack)                  */
 /* ------------------------------------------------------------------ */
-import imgMain      from "./assets/assets/m1.png";
-import imgEcomers   from "./assets/assets/m2.png";
-import imgEcomWomen from "./assets/assets/m3.png";
-import imgRK1       from "./assets/assets/m4.png";
-import imgRK2       from "./assets/assets/m5.png";
-import imgRK3       from "./assets/assets/m6.png";
-import imgRK4       from "./assets/assets/m7.png";
-import imgRK5       from "./assets/assets/m7.png";
-import imgBluxHtml  from "./assets/assets/m7.png";
+import imgMain      from "./assets/assets/m1.webp";
+import imgEcomers   from "./assets/assets/m2.webp";
+import imgEcomWomen from "./assets/assets/m3.webp";
+import imgRK1       from "./assets/assets/m4.webp";
+import imgRK2       from "./assets/assets/m5.webp";
+import imgRK3       from "./assets/assets/m6.webp";
+import imgRK4       from "./assets/assets/m7.webp";
+import imgRK5       from "./assets/assets/m7.webp";
+import imgBluxHtml  from "./assets/assets/m7.webp";
 
 /* ------------------------------------------------------------------ */
 /*  Lazy-load every real project (only used by the full-screen viewer) */
@@ -1043,7 +1043,7 @@ export default function App() {
       `*Target Timeline:* ${form.timeline}`,
       form.notes.trim() ? `*Project Brief:* ${form.notes.trim()}` : null,
       "--------------------------------",
-      "Sent via bluxuryteck.pages.dev",
+      "Sent via bluxurytech.com",
     ].filter(Boolean);
 
     const waUrl = buildWhatsAppUrl(lines.join("\n"));
@@ -1396,7 +1396,7 @@ export default function App() {
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} B Luxury Private Limited. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} B Luxury Private Limited. All rights reserved. · <a href="/privacy.html">Privacy Policy</a></span>
           <span>India · Serving Global Enterprise Clients</span>
         </div>
       </footer>

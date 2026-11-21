@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bluxuryteck.pages.dev/sitemap.xml
+Sitemap: https://bluxurytech.com/sitemap.xml

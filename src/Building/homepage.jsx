@@ -7,14 +7,14 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 /*  Static image imports (bundled by Vite / Webpack)                  */
 /*  Put your screenshots in src/assets/portfolio/                     */
 /* ------------------------------------------------------------------ */
-// import imgMain      from "../assets/assets/m1.png";
-import imgEcomers   from "../assets/assets/m2.png";
-import imgEcomWomen from "../assets/assets/m1.png";
-import imgRK1       from "../assets/assets/m6.png";
-import imgRK2       from "../assets/assets/m3.png";
-import imgRK3       from "../assets/assets/m7.png";
-import imgRK4       from "../assets/assets/m4.png";
-import imgRK5       from "../assets/assets/m5.png";
+// import imgMain      from "../assets/assets/m1.webp";
+import imgEcomers   from "../assets/assets/m2.webp";
+import imgEcomWomen from "../assets/assets/m1.webp";
+import imgRK1       from "../assets/assets/m6.webp";
+import imgRK2       from "../assets/assets/m3.webp";
+import imgRK3       from "../assets/assets/m7.webp";
+import imgRK4       from "../assets/assets/m4.webp";
+import imgRK5       from "../assets/assets/m5.webp";
 
 /* ------------------------------------------------------------------ */
 /*  Lazy-load every real project (only used by the full-screen viewer) */
